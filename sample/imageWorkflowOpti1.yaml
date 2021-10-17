@@ -1,0 +1,36 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: faceDetection
+    handlerRootFolder: image-faceDetection
+    executionTime: 584
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: checkFaceDuplicate
+    handlerRootFolder: image-checkFaceDuplicate
+    executionTime: 706
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: imageWorkflowConverter
+    handlerRootFolder: image-converter
+    executionTime: 6
+
+chain:
+  - type: function
+    functionId: faceDetection
+    mergeInputAndOutput: true
+  - type: converter
+    rules:
+      - from: in
+        to: root
+      - from: out
+        to: root.detectedFaceDetails
+  - type: selector
+    target: root
+  - type: function
+    functionId: checkFaceDuplicate
+    mergeInputAndOutput: true
+  - type: selector
+    target: in
+  - type: function
+    functionId: imageWorkflowConverter

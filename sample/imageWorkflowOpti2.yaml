@@ -1,0 +1,52 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: addFaceToIndex
+    handlerRootFolder: image-addFaceToIndex
+    executionTime: 648
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: thumbnail
+    handlerRootFolder: image-thumbnail
+    executionTime: 4681
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: pass4000ms
+    handlerRootFolder: image-pass4000ms
+    executionTime: 4000
+
+chain:
+  - type: branch
+    blocks:
+      - condition: $path$ === 1
+        chains:
+          - type: converter
+            rules:
+              - from: data.userId
+                to: userId
+              - from: data.s3Bucket
+                to: s3Bucket
+              - from: data.s3Key
+                to: s3Key
+              - from: data.detectedFaceDetails
+                to: detectedFaceDetails
+          - type: function
+            functionId: addFaceToIndex
+          - type: function
+            functionId: pass4000ms
+      - condition: null
+        chains:
+          - type: converter
+            rules:
+              - from: data.userId
+                to: userId
+              - from: data.s3Bucket
+                to: s3Bucket
+              - from: data.s3Key
+                to: s3Key
+              - from: data.detectedFaceDetails
+                to: detectedFaceDetails
+          - type: function
+            functionId: thumbnail
+          - type: function
+            functionId: pass4000ms

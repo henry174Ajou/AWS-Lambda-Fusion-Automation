@@ -1,0 +1,49 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: remove
+    handlerRootFolder: removingZeroAndNegative
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: counting
+    handlerRootFolder: counting
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: sum
+    handlerRootFolder: numberListSum
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: divide
+    handlerRootFolder: divider
+    executionTime: 2
+
+chain:
+  - type: function
+    functionId: remove
+  - type: converter
+    rules:
+      - from: numberList
+        to: list
+  - type: function
+    functionId: counting
+    mergeInputAndOutput: true
+  - type: converter
+    rules:
+      - from: in.list
+        to: numberList
+      - from: out.count
+        to: count
+  - type: function
+    functionId: sum
+    mergeInputAndOutput: true
+  - type: converter
+    rules:
+      - from: in.count
+        to: denominator
+      - from: out.sum
+        to: numerator
+  - type: function
+    functionId: divide

@@ -1,0 +1,32 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: persistMetadata
+    handlerRootFolder: image-persistMetadata
+    executionTime: 248
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: deleteFace
+    handlerRootFolder: image-deleteFace
+    executionTime: 258
+
+chain:
+  - type: converter
+    rules:
+      - from: list[0].data.userId
+        to: userId
+      - from: list[0].data.s3Bucket
+        to: s3Bucket
+      - from: list[0].data.s3Key
+        to: s3Key
+      - from: list[0].data.detectedFaceDetails
+        to: detectedFaceDetails
+      - from: mapResult
+        to: parallelResult
+  - type: function
+    functionId: persistMetadata
+    mergeInputAndOutput: true
+  - type: selector
+    target: in
+  - type: function
+    functionId: deleteFace

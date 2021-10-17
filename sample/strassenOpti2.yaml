@@ -1,0 +1,21 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: collector
+    handlerRootFolder: strassenCollect
+    executionTime: 28
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: save
+    handlerRootFolder: saveMatrix
+    executionTime: 2
+
+chain:
+  - type: function
+    functionId: collector
+  - type: converter
+    rules:
+      - from: result
+        to: matrix
+  - type: function
+    functionId: save

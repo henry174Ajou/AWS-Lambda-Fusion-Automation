@@ -1,0 +1,69 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: load
+    handlerRootFolder: loadMatrix
+    executionTime: 4
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: distribute
+    handlerRootFolder: strassenDistribute
+    executionTime: 52
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: mapper
+    handlerRootFolder: strassenMapper
+    executionTime: 1313
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: collector
+    handlerRootFolder: strassenCollect
+    executionTime: 65
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: save
+    handlerRootFolder: saveMatrix
+    executionTime: 4
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: matrixInputConverter
+    handlerRootFolder: matrixInputConverter
+    executionTime: 2
+
+chain:
+  - type: map
+    iterationTarget: matrixList
+    numberOfRequest: 2
+    maximumConcurrency: 2
+    stepName: loadMap
+    chain:
+      - type: function
+        functionId: load
+  - type: converter
+    rules:
+      - from: ""
+        to: "list"
+  - type: function
+    functionId: matrixInputConverter
+  - type: function
+    functionId: distribute
+  - type: map
+    iterationTarget: list
+    numberOfRequest: 7
+    maximumConcurrency: 7
+    stepName: mapperMap
+    chain:
+      - type: function
+        functionId: mapper
+  - type: converter
+    rules:
+      - from: ""
+        to: list
+  - type: function
+    functionId: collector
+  - type: converter
+    rules:
+      - from: result
+        to: matrix
+  - type: function
+    functionId: save

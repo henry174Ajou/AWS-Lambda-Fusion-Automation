@@ -1,0 +1,65 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: remove
+    handlerRootFolder: removingZeroAndNegative
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: twice
+    handlerRootFolder: twice
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: square
+    handlerRootFolder: square
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: sum
+    handlerRootFolder: numberListSum
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: pass50ms
+    handlerRootFolder: fiftyMilliPass
+    executionTime: 50
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: complexConverter
+    handlerRootFolder: singleShortAndLongMapConverter
+    executionTime: 2
+
+chain:
+  - type: function
+    functionId: remove
+  - type: map
+    iterationTarget: numberList
+    numberOfRequest: 8
+    maximumConcurrency: 8
+    chain:
+      - type: converter
+        rules:
+          - from: ""
+            to: number
+      - type: function
+        functionId: twice
+      - type: function
+        functionId: square
+      - type: function
+        functionId: pass50ms
+  - type: converter
+    rules:
+      - from: "[].number"
+        to: numberList
+  - type: function
+    functionId: sum
+    mergeInputAndOutput: true
+  - type: converter
+    rules:
+      - from: in.numberList
+        to: numberList
+      - from: out.sum
+        to: sum
+  - type: function
+    functionId: complexConverter

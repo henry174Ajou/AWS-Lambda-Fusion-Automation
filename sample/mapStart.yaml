@@ -1,0 +1,26 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: twice
+    handlerRootFolder: twice
+    executionTime: 2000
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: sum
+    handlerRootFolder: numberListSum
+    executionTime: 2
+
+chain:
+  - type: map
+    iterationTarget: numberList
+    numberOfRequest: 4
+    maximumConcurrency: 2
+    chain:
+      - type: function
+        functionId: twice
+  - type: converter
+    rules:
+      - from: ""
+        to: numberList
+  - type: function
+    functionId: sum

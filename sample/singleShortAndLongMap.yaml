@@ -1,0 +1,107 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: remove
+    handlerRootFolder: removingZeroAndNegative
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: twice
+    handlerRootFolder: twice
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: square
+    handlerRootFolder: square
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: sum
+    handlerRootFolder: numberListSum
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: pass500ms
+    handlerRootFolder: pass500ms
+    executionTime: 500
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: pass50ms
+    handlerRootFolder: fiftyMilliPass
+    executionTime: 50
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: divide
+    handlerRootFolder: divider
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: logger
+    handlerRootFolder: logger
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: complexConverter
+    handlerRootFolder: singleShortAndLongMapConverter
+    executionTime: 2
+
+chain:
+  - type: function
+    functionId: remove
+  - type: map
+    iterationTarget: numberList
+    numberOfRequest: 8
+    maximumConcurrency: 8
+    stepName: firstMap
+    chain:
+      - type: converter
+        rules:
+          - from: ""
+            to: number
+      - type: function
+        functionId: twice
+      - type: function
+        functionId: square
+      - type: function
+        functionId: pass50ms
+  - type: converter
+    rules:
+      - from: "[].number"
+        to: numberList
+  - type: function
+    functionId: sum
+    mergeInputAndOutput: true
+  - type: converter
+    rules:
+      - from: in.numberList
+        to: numberList
+      - from: out.sum
+        to: sum
+  - type: function
+    functionId: complexConverter
+  - type: map
+    iterationTarget: ""
+    numberOfRequest: 8
+    maximumConcurrency: 8
+    stepName: secondMap
+    chain:
+      - type: converter
+        rules:
+          - from: number
+            to: numerator
+          - from: sum
+            to: denominator
+      - type: function
+        functionId: divide
+      - type: function
+        functionId: pass500ms
+  - type: converter
+    rules:
+      - from: "[].result"
+        to: "numberList"
+  - type: add value
+    rules:
+      - target: message
+        value: "\"hello\""
+  - type: function
+    functionId: logger

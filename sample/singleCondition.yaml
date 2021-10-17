@@ -1,0 +1,66 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: divider
+    handlerRootFolder: divider
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: logger
+    handlerRootFolder: logger
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: 50ms
+    handlerRootFolder: fiftyMilliPass
+    executionTime: 50
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: square
+    handlerRootFolder: square
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: twice
+    handlerRootFolder: twice
+    executionTime: 2
+
+chain:
+  - type: converter
+    rules:
+      - from: number
+        to: numerator
+  - type: add value
+    rules:
+      - target: denominator
+        value: "2"
+  - type: function
+    functionId: divider
+  - type: branch
+    blocks:
+      - condition: $result$ === 0
+        probability: 0.7
+        chains:
+          - type: converter
+            rules:
+              - from: result
+                to: number
+          - type: function
+            functionId: square
+          - type: function
+            functionId: 50ms
+      - condition: null
+        probability: 0.3
+        chains:
+          - type: converter
+            rules:
+              - from: result
+                to: number
+          - type: function
+            functionId: twice
+  - type: add value
+    rules:
+      - target: message
+        value: this is an even number!
+  - type: function
+    functionId: logger

@@ -1,0 +1,59 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: absolute
+    handlerRootFolder: absolute
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: sum
+    handlerRootFolder: numberListSum
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: Pass50ms
+    handlerRootFolder: fiftyMilliPass
+    executionTime: 50
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: Pass500ms
+    handlerRootFolder: pass500ms
+    executionTime: 500
+
+chain:
+  - type: function
+    functionId: absolute
+  - type: map
+    iterationTarget: matrix
+    numberOfRequest: 4
+    maximumConcurrency: 4
+    chain:
+      - type: map
+        iterationTarget: ""
+        numberOfRequest: 4
+        maximumConcurrency: 4
+        chain:
+          - type: converter
+            rules:
+              - from: ""
+                to: number
+          - type: function
+            functionId: absolute
+          - type: function
+            functionId: Pass50ms
+      - type: converter
+        rules:
+          - from: "[].number"
+            to: numberList
+      - type: function
+        functionId: sum
+        stepName: inSum
+      - type: function
+        functionId: Pass500ms
+  - type: converter
+    rules:
+      - from: "[].sum"
+        to: numberList
+  - type: function
+    functionId: sum
+    stepName: outSum

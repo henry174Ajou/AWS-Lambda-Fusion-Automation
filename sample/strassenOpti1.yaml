@@ -1,0 +1,33 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: load
+    handlerRootFolder: loadMatrix
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: distribute
+    handlerRootFolder: strassenDistribute
+    executionTime: 7
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: matrixInputConverter
+    handlerRootFolder: matrixInputConverter
+    executionTime: 2
+
+chain:
+  - type: map
+    iterationTarget: matrixList
+    numberOfRequest: 2
+    maximumConcurrency: 2
+    chain:
+      - type: function
+        functionId: load
+  - type: converter
+    rules:
+      - from: ""
+        to: "list"
+  - type: function
+    functionId: matrixInputConverter
+  - type: function
+    functionId: distribute

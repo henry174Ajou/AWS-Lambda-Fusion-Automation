@@ -1,0 +1,80 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: allPositive
+    handlerRootFolder: allPositive
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: square
+    handlerRootFolder: square
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: twice
+    handlerRootFolder: twice
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: absolute
+    handlerRootFolder: absolute
+    executionTime: 2
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: sum
+    handlerRootFolder: numberListSum
+    executionTime: 2
+
+chain:
+  - type: function
+    functionId: allPositive
+    mergeInputAndOutput: true
+  - type: converter
+    rules:
+      - from: in.numberList
+        to: numberList
+      - from: out.result
+        to: isAllPositive
+  - type: branch
+    blocks:
+      - condition: "$isAllPositive$ === true"
+        chains:
+          - type: map
+            iterationTarget: numberList
+            numberOfRequest: 8
+            maximumConcurrency: 8
+            chain:
+              - type: converter
+                rules:
+                  - from: ""
+                    to: number
+              - type: function
+                functionId: square
+      - condition: null
+        chains:
+          - type: map
+            iterationTarget: numberList
+            numberOfRequest: 8
+            maximumConcurrency: 8
+            chain:
+              - type: converter
+                rules:
+                  - from: ""
+                    to: number
+              - type: function
+                functionId: absolute
+              - type: function
+                functionId: twice
+  - type: converter
+    rules:
+      - from: "[].number"
+        to: numberList
+  - type: function
+    functionId: sum
+    mergeInputAndOutput: true
+  - type: converter
+    rules:
+      - from: in.numberList
+        to: numberList
+      - from: out.sum
+        to: sum

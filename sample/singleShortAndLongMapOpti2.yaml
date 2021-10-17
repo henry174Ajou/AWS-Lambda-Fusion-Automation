@@ -1,0 +1,23 @@
+functionInfo:
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: pass500ms
+    handlerRootFolder: pass500ms
+    executionTime: 500
+  - handlerFileName: index.js
+    handlerFunctionName: handler
+    functionId: divide
+    handlerRootFolder: divider
+    executionTime: 2
+
+chain:
+  - type: converter
+    rules:
+      - from: number
+        to: numerator
+      - from: sum
+        to: denominator
+  - type: function
+    functionId: divide
+  - type: function
+    functionId: pass500ms
