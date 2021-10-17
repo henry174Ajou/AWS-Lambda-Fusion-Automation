@@ -25,7 +25,7 @@ This script fuse source functions that compose a workflow into a single big func
 ## How to use
 
 1. Write a function chain specification.
-   A function chain specification describes your workflow structure. The syntax is explained the below.
+   A function chain specification describes your workflow structure. The syntax document for a function chain specification will be uploaded soon.
 
 2. Pack source functions and the function chain specification.
    The function chain specification and the source functions to be fused are in the same directory with the following directory structure.
