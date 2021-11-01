@@ -1,0 +1,4 @@
+{
+  "entryPoints": ["../src/type/FunctionChainSpecification.ts"],
+  "out": "../Function Chain Specification Document"
+}

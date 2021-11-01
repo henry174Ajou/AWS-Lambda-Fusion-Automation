@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \\\"Error: no __tests__ specified\\\" && exit 1",
+    "test": "jest",
     "dev": "ts-node src",
     "buildAndRun": "tsc && node dist",
     "build": "tsc",
-    "fuse": "node ./dist/index.js"
+    "fuse": "node ./dist/index.js",
+    "doc": "typedoc --options ./typeDocMaterial/typedocConfig.json --readme ./typeDocMaterial/readme.md"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "jest": "^27.1.1",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
+    "typedoc": "^0.22.7",
     "typescript": "^4.4.2"
   },
   "dependencies": {

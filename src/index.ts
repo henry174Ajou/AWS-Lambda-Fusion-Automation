@@ -14,6 +14,7 @@ log.useLabels = true;
 
 let workingDirectory = process.cwd();
 let functionSpecificationFilePath = "";
+let sourceFunctionRootDirectoryPath = "";
 let pipelineDataInspectMode = false;
 let lastErrorObjectId = 0;
 
@@ -25,6 +26,7 @@ main().then(code=>{process.exit(code)}).catch(function(error){
 async function main() : Promise<number>{
     console.log(`working directory: ${workingDirectory}`);
     functionSpecificationFilePath = path.join(workingDirectory, await prompt("function specification file path: "));
+    sourceFunctionRootDirectoryPath = path.join(workingDirectory, await prompt("the path of a directory that contains source functions: "));
     pipelineDataInspectMode = await prompt("inspect on? (y/n): ") === "y";
 
     const startTime = moment();
@@ -105,7 +107,7 @@ function loadFunctionSourceCodes(functionInfoList: FunctionInfo[]) : Map<string,
     //2.   load function code
     const functionCodeDictionary = new Map<string, string>();
     for(let functionInfo of functionInfoList){
-        const functionCode: string = fs.readFileSync(path.join(workingDirectory, "source_function", functionInfo.handlerRootFolder, functionInfo.handlerFileName), "utf8");
+        const functionCode: string = fs.readFileSync(path.join(sourceFunctionRootDirectoryPath, functionInfo.handlerRootFolder, functionInfo.handlerFileName), "utf8");
 
         //2.1. convert aws module declaration (exports.handler) to common js module declaration (module.exports)
         const commonJsCode: string = functionCode.replace(new RegExp(`exports.${functionInfo.handlerFunctionName}`), "module.exports");
@@ -187,6 +189,10 @@ function writeFusionFunctionBodyCode(functionChainSpecification: FunctionChainSp
                     break;
 
                 case "map":
+                case "fan-out":
+                case "fanOut":
+                case "fanout":
+                case "fan out":
                     const inputVariableName = `${pipeDataVariableName}${lastPipeDataId}`;
 
                     fusedFunctionBody += "\n";
@@ -205,6 +211,7 @@ function writeFusionFunctionBodyCode(functionChainSpecification: FunctionChainSp
 
                     const mapResultListVariableName = `${pipeDataVariableName}${lastPipeDataId+1}`;
                     if(false){ //TODO: 나중에 조건문을 스위치 할 수 있도록 바꾸자.
+                        //promise all로 map을 처리하는 방법
                         fusedFunctionBody += `\n${ident(depth)}const ${pipeDataVariableName}${lastPipeDataId+1} = await Promise.all(${pipeDataVariableName}${lastPipeDataId}.map(function(value){`
                         fusedFunctionBody += `\n${ident(depth+1)}const ${pipeDataVariableName}${lastPipeDataId+1} = value;`;
                         lastPipeDataId++;
@@ -217,6 +224,7 @@ function writeFusionFunctionBodyCode(functionChainSpecification: FunctionChainSp
                         lastPipeDataId++;
                     }
                     else {
+                        //for each로 map을 처리하는 방법.
                         const iterationTarget = `${pipeDataVariableName}${lastPipeDataId}`
                         const forResultArrayName = `${pipeDataVariableName}${lastPipeDataId+1}`;
                         const iteratorName = `${pipeDataVariableName}${lastPipeDataId+2}`;
@@ -349,7 +357,7 @@ function writeResult(fusedFunctionCode: string, functionInfoList: FunctionInfo[]
 
     //4.2 copy source function directories
     for(let functionInfo of functionInfoList){
-        const source = path.join(workingDirectory, "source_function", functionInfo.handlerRootFolder);
+        const source = path.join(sourceFunctionRootDirectoryPath, functionInfo.handlerRootFolder);
         const destination = path.join(workingDirectory, "result", functionInfo.handlerRootFolder);
         if(!fs.existsSync(path.join(workingDirectory, "result", functionInfo.handlerRootFolder))){
             fs.mkdirSync(path.join(workingDirectory, "result", functionInfo.handlerRootFolder));

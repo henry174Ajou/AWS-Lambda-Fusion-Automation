@@ -6,9 +6,11 @@
 #ignore custom file
 playground/
 
+sample/result
+result/
+
 # Node artifact files
 node_modules/
-dist/
 
 # Compiled Java class files
 *.class
