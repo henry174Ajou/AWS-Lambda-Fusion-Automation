@@ -24,7 +24,7 @@ This script fuse source functions that compose a workflow into a single big func
 
 ## How to use
 
-1. Write a function chain specification. A function chain specification describes your workflow structure. I will upload the syntax document for a function chain specification soon.
+1. Write a function chain specification. A function chain specification describes your workflow structure. You can see the document of the schema of the function chain specification [here](https://henry174ajou.github.io/AWS-Lambda-Fusion-Automation/)
    
 2. Pack the source functions in the same directory with the following directory structure.
 
@@ -166,3 +166,7 @@ After the last question, the automation will be started.
 ```
 
 You can see the fused function in `result` directory. `index.js` it is. The handler name is `handler`.
+
+## Function Chain Specification Document
+
+[https://henry174ajou.github.io/AWS-Lambda-Fusion-Automation/]()
