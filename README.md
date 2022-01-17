@@ -169,4 +169,4 @@ You can see the fused function in `result` directory. `index.js` it is. The hand
 
 ## Function Chain Specification Document
 
-[https://henry174ajou.github.io/AWS-Lambda-Fusion-Automation/]()
+Click [here](https://henry174ajou.github.io/AWS-Lambda-Fusion-Automation/) to open the document.
